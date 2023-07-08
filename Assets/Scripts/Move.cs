@@ -1,120 +1,138 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 
 public class Move : MonoBehaviour
 {
-    [SerializeField] float forceJamp = 7f; //сериализованное поле типа float , содержит значение силы прыжка
-    [SerializeField] float speedmove = 8f; //сериализованное поле типа float , содержит значение скорости передвижения
-    [SerializeField] bool onGround = false; //сериализованное поле типа bool , определяет находится ли объект на поверхности
-    [SerializeField] Rigidbody rb;
-    public Transform _transform; //публичное поле , содержит ссылку на компонент Transform 
-    protected int countCoins = 0; //защищенное поле типа инт , накапливает собранные монетки
-    protected int healt = 3; //защищенное поле типа инт , содержит макс значение здоровья
-    public bool changeNewInput; //публичное поле типа bool , при включении меняет систему ввода
-    private NewInput _newInput; //приватное поле , содержит ссылку на класс NewInput
+    [SerializeField] Animator animator;
+    [SerializeField] float forceJamp = 7f;
+    [SerializeField] float speedmove = 8f;
+    [SerializeField] bool onGround = false;
+    private Rigidbody rb;
+    public Transform _transform;
+    protected int countCoins = 0;
+    protected int healt = 3;
+    public bool changeNewInput;
+    private NewInput _newInput;
 
     ////////////////////////
 
-    public static Action CoinsEvent; //создаём событие CoinsEvent
-    public static Action HealtEvent; //создаём событие HealtEvent
+    public static Action CoinsEvent;
+    public static Action HealtEvent;
+
 
     ////////////////////////
 
+#if UNITY_STANDALONE
     private void Awake()
-    {        
-        _newInput = new NewInput(); //создаём экземпляр класса NewInput  
+    {
+        _newInput = new NewInput();
     }
+#endif
 
     private void OnEnable()
     {
-        _newInput.Enable(); // активируем NewInput
+        _newInput.Enable();
+
+#if UNITY_STANDALONE
+        forceJamp = 7f;
+        _newInput.Move.Jamp.performed += context => JampMetod();
+#endif
+#if UNITY_EDITOR
+        forceJamp = 3f;
+#endif
+
     }
 
     private void OnDisable()
     {
-        _newInput.Disable(); //деактивируем NewInput
+        _newInput.Disable();
     }
 
 
     void Start()
     {
-        rb = GetComponent<Rigidbody>(); //получаем ссылку на компонент Rigidbody
-        StartCoroutine(SpeedCoroutine()); // запускаем корутину     
+        rb = GetComponent<Rigidbody>();
+        StartCoroutine(SpeedCoroutine());
     }
 
-    private void OnTriggerEnter(Collider other) //проверка столкновений
+    private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Enemy") //если столкнулись с врагом
-        {            
-            HealtEvent?.Invoke(); // вызываем событие HealtEvent
-            speedmove = 8f; //задаём скорость передвижения
+        if (other.gameObject.tag == "Enemy")
+        {
+            HealtEvent?.Invoke();
+            speedmove = 8f;
         }
 
-        if (other.gameObject.tag == "Money") //если столкнулись с монеткой
+        if (other.gameObject.tag == "Money")
         {
-            other.gameObject.SetActive(false); //отключаем объект           
-            CoinsEvent?.Invoke(); // вызываем событие CoinsEvent
+            other.gameObject.SetActive(false);
+            CoinsEvent?.Invoke();
         }
-    } 
+    }
 
     void Update()
     {
-        transform.Translate(Vector3.forward * speedmove * Time.deltaTime); //постоянно движемся вперёд
+        transform.Translate(Vector3.forward * speedmove * Time.deltaTime);
+        MoveMetod();
 
-        if (changeNewInput == true) //проверяем условия для прыжка ,используя новую систему ввода
-        {
-            forceJamp = 7f; //задаём силу прыжка
-            _newInput.Move.Jamp.performed += context => JampMetod(); // подписываемся на событие Jamp и вызываем метод JampMetod()        
-        }
-        if((changeNewInput == false) && Input.GetKeyDown(KeyCode.Space) && onGround) //проверяем условия для прыжка используя старую систему ввода
-        {
-            forceJamp = 3f; //задаём силу прыжка
-            JampMetod(); //вызываем метод прыжка
-        }
+#if UNITY_EDITOR
 
-        MoveMetod(); //вызывем метод изменения положения
+        if (Input.GetKeyDown(KeyCode.Space) && onGround)
+        {
+            JampMetod();
+        }
+#endif
     }
-    
 
-  
-    private void OnCollisionStay(Collision collision) => onGround = true; //при соприкосновении с поверхностью получаем возможность прыгать
-
-    private void OnCollisionExit(Collision collision) => onGround = false; //при отрыве от поверхности лишаемся возможности прыгать
-
-    IEnumerator SpeedCoroutine() //корутина увеличивающая скорость объекта каждую секунду
+    private void OnCollisionStay(Collision collision)
     {
-        while (true) //бесконечный цикл
+        
+        onGround = true;
+    }
+        
+
+    private void OnCollisionExit(Collision collision)
+    {
+        onGround = false;        
+    }
+
+    IEnumerator SpeedCoroutine()
+    {
+        while (true) 
         {
             speedmove += 0.5f;
             yield return new WaitForSeconds(1f);
         }
     }
 
-    private void JampMetod() // метод реализующий прыжок за счет физики
+    private void JampMetod() 
     {
-        if (onGround) // если объект на земле
+        if (onGround)
         {
-            rb.AddForce(Vector3.up * forceJamp, ForceMode.VelocityChange); //придаём импульс по оси Y
+            animator.SetTrigger("Jamp");
+            rb?.AddForce(Vector3.up * forceJamp, ForceMode.VelocityChange);
+            animator.SetTrigger("Run");
         }
     }
 
-    private void MoveMetod() // метод реализующий изменения положения вправо/влево ,используя две системы ввода
+    private void MoveMetod() 
     {
         Vector3 move = Vector3.right * speedmove * Time.deltaTime;
 
-        if (changeNewInput == true) //если NewInputSystem включена
-        {
-            var direction = _newInput.Move.SlideMove.ReadValue<Vector2>(); //считываем значение Vector2 при срабатывании Actions "SlideMove"
-            transform.Translate(move * direction);
-        }
-        if (changeNewInput == false) //если NewInputSystem выключена
-        {            
-           if (Input.GetKey(KeyCode.D)) transform.Translate(move);
-           if (Input.GetKey(KeyCode.A)) transform.Translate(-move);
-        }      
+#if UNITY_STANDALONE
+
+        var direction = _newInput.Move.SlideMove.ReadValue<Vector2>(); 
+        transform.Translate(move * direction);
+
+#endif
+
+#if UNITY_EDITOR
+
+        if (Input.GetKey(KeyCode.RightArrow)) transform.Translate(move);
+        if (Input.GetKey(KeyCode.LeftArrow)) transform.Translate(-move);
+#endif
+
     }
 }
-

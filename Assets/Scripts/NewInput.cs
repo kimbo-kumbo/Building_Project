@@ -92,6 +92,34 @@ public partial class @NewInput: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""GameControl"",
+            ""id"": ""0253b12c-ede3-4fd2-8e17-bb72762aab8a"",
+            ""actions"": [
+                {
+                    ""name"": ""PauseMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""7eb95f59-c5da-48e5-a6f8-5b7afaa2d2cb"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""26fb9f9b-aa62-47c5-8843-09c07cab18c9"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PauseMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -112,6 +140,9 @@ public partial class @NewInput: IInputActionCollection2, IDisposable
         m_Move = asset.FindActionMap("Move", throwIfNotFound: true);
         m_Move_SlideMove = m_Move.FindAction("SlideMove", throwIfNotFound: true);
         m_Move_Jamp = m_Move.FindAction("Jamp", throwIfNotFound: true);
+        // GameControl
+        m_GameControl = asset.FindActionMap("GameControl", throwIfNotFound: true);
+        m_GameControl_PauseMenu = m_GameControl.FindAction("PauseMenu", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -223,6 +254,52 @@ public partial class @NewInput: IInputActionCollection2, IDisposable
         }
     }
     public MoveActions @Move => new MoveActions(this);
+
+    // GameControl
+    private readonly InputActionMap m_GameControl;
+    private List<IGameControlActions> m_GameControlActionsCallbackInterfaces = new List<IGameControlActions>();
+    private readonly InputAction m_GameControl_PauseMenu;
+    public struct GameControlActions
+    {
+        private @NewInput m_Wrapper;
+        public GameControlActions(@NewInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @PauseMenu => m_Wrapper.m_GameControl_PauseMenu;
+        public InputActionMap Get() { return m_Wrapper.m_GameControl; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(GameControlActions set) { return set.Get(); }
+        public void AddCallbacks(IGameControlActions instance)
+        {
+            if (instance == null || m_Wrapper.m_GameControlActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_GameControlActionsCallbackInterfaces.Add(instance);
+            @PauseMenu.started += instance.OnPauseMenu;
+            @PauseMenu.performed += instance.OnPauseMenu;
+            @PauseMenu.canceled += instance.OnPauseMenu;
+        }
+
+        private void UnregisterCallbacks(IGameControlActions instance)
+        {
+            @PauseMenu.started -= instance.OnPauseMenu;
+            @PauseMenu.performed -= instance.OnPauseMenu;
+            @PauseMenu.canceled -= instance.OnPauseMenu;
+        }
+
+        public void RemoveCallbacks(IGameControlActions instance)
+        {
+            if (m_Wrapper.m_GameControlActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IGameControlActions instance)
+        {
+            foreach (var item in m_Wrapper.m_GameControlActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_GameControlActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public GameControlActions @GameControl => new GameControlActions(this);
     private int m_KeyboardSchemeIndex = -1;
     public InputControlScheme KeyboardScheme
     {
@@ -236,5 +313,9 @@ public partial class @NewInput: IInputActionCollection2, IDisposable
     {
         void OnSlideMove(InputAction.CallbackContext context);
         void OnJamp(InputAction.CallbackContext context);
+    }
+    public interface IGameControlActions
+    {
+        void OnPauseMenu(InputAction.CallbackContext context);
     }
 }

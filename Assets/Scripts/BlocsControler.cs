@@ -1,46 +1,47 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class BlocsControler : MonoBehaviour
 {
-    [SerializeField] Text textProgres; //сериализованное поле типа Text , выводит на Canvas информацию о пройденных блоках
-    [SerializeField] Transform[] blocks; //сериализованное поле типа Transform , содержит ссылку на массив компонентов Transform
-    public int _progres = 0; //публичное поле типа int, накапличает число пройденных блоков
-    private float _step = 20f; //приватное поле типа float, содержит значение шага платформы
-    private float _lastZ = 180f; //приватное поле типа float, содержит значение длинны всего пути
-    private int _currentBlock = 0; //приватное поле типа , содержит index текущего блока
-    public GameObject _prefabs; //публичное поле типа GameObject, содержит ссылку на префаб
+    [SerializeField] Text textProgres; 
+    [SerializeField] Transform[] blocks; 
+    public int _progres = 0; 
+    private float _step = 20f; 
+    private float _lastZ = 180f; 
+    private int _currentBlock = 0; 
+    public GameObject _prefabs;
 
-
-    private void OnTriggerEnter(Collider other) //проверка столкновений
+#if UNITY_EDITOR
+    private void Start()
     {
-        if (other.gameObject.tag == "TrigerLoadLevel") //если пересекли зону обновления уровня
+        if (textProgres == null || _prefabs == null || blocks == null)
+            Debug.LogError($"Есть незаполненные ссылки в {name}");
+        else Debug.Log("Все ссылки заполнены");
+    }
+#endif
+    private void OnTriggerEnter(Collider other) 
+    {
+        if (other.gameObject.tag == "TrigerLoadLevel") 
         {
-            UpdateLevel(); //вызываем метод обновления уровня
+            UpdateLevel(); 
         }
     }
-
     private void UpdateLevel()
     {
-        _progres++; //увеличиваем счётчик прогресса
-        textProgres.text = "Blocks passed: " + _progres.ToString(); //переносим значение счётчика на Canvas
-        _lastZ += _step; //увеличиваем шаг смещения по оси Z для последней платформы
-        var position = blocks[_currentBlock].position; // получаем позицию текущего блока 
-        position.z = _lastZ; //обновляем позицию 
-        blocks[_currentBlock].position = position; //переносим платформу в новую позицию
-        _currentBlock++; //увеличиваем индекс
-        if (_currentBlock >= blocks.Length) //условие сброса индекса
+        _progres++; 
+        textProgres.text = "Blocks passed: " + _progres.ToString();
+        _lastZ += _step; 
+        var position = blocks[_currentBlock].position; 
+        position.z = _lastZ; 
+        blocks[_currentBlock].position = position; 
+        _currentBlock++; 
+        if (_currentBlock >= blocks.Length) 
         {
             _currentBlock = 0;
         }
-
-        CreatePrefabs(); //создаём экземпляр префаба
+        CreatePrefabs(); 
     }
-
-    private void CreatePrefabs() //метод создания объекта на основе префаба
+    private void CreatePrefabs()
     {
         var prefabs = GameObject.Instantiate(_prefabs,new Vector3(Random.Range(-5f, 5f), 1, _lastZ), Quaternion.identity);        
     }
