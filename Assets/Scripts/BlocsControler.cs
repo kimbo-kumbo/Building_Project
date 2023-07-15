@@ -21,10 +21,15 @@ public class BlocsControler : MonoBehaviour
 #endif
     private void OnTriggerEnter(Collider other) 
     {
-        if (other.gameObject.tag == "TrigerLoadLevel") 
+        if(other.TryGetComponent(out TrigerLoadLevel trigerLoadLevel))
         {
-            UpdateLevel(); 
+            UpdateLevel();
+            trigerLoadLevel.ActivateCoin();
         }
+        //if (other.gameObject.tag == "TrigerLoadLevel") 
+        //{
+        //    UpdateLevel(); 
+        //}
     }
     private void UpdateLevel()
     {
@@ -39,7 +44,7 @@ public class BlocsControler : MonoBehaviour
         {
             _currentBlock = 0;
         }
-        CreatePrefabs(); 
+        //CreatePrefabs(); 
     }
     private void CreatePrefabs()
     {

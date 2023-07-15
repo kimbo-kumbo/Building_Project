@@ -10,9 +10,9 @@ public class Move : MonoBehaviour
     [SerializeField] float speedmove = 8f;
     [SerializeField] bool onGround = false;
     private Rigidbody rb;
-    public Transform _transform;
-    protected int countCoins = 0;
-    protected int healt = 3;
+    [HideInInspector] public Transform _transform;
+    [HideInInspector] public int countCoins = 0;
+    [HideInInspector] public int healt = 3;
     public bool changeNewInput;
     private NewInput _newInput;
 

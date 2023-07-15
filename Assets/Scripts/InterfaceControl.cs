@@ -2,8 +2,9 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class InterfaceControl : Move 
+public class InterfaceControl : MonoBehaviour
 {
+    [SerializeField] Move _move;
     [SerializeField] Text textTime; 
     [SerializeField] Text textHealt; 
     [SerializeField] Text textCoins;
@@ -17,7 +18,7 @@ public class InterfaceControl : Move
             Debug.LogError($"Есть незаполненные ссылки в {name}");
         else Debug.Log("Все ссылки заполненны");
 #endif
-        textHealt.text = healt.ToString(); 
+        textHealt.text = _move.healt.ToString(); 
         StartCoroutine(TimeCoroutine());        
     }
     private void OnEnable()
@@ -32,13 +33,13 @@ public class InterfaceControl : Move
     }
     private void CoinsPlus() 
     {
-        countCoins++;
-        textCoins.text = countCoins.ToString();
+        _move.countCoins++;
+        textCoins.text = _move.countCoins.ToString();
     }
     private void HealtMinus()
     {
-        healt--;
-        textHealt.text = healt.ToString();
+        _move.healt--;
+        textHealt.text = _move.healt.ToString();
     }   
     IEnumerator TimeCoroutine()
     {
@@ -47,7 +48,7 @@ public class InterfaceControl : Move
             countTime--;
             textTime.text = countTime.ToString();
             yield return new WaitForSeconds(1f);
-            if (_transform.position.y <= -3f || healt <= 0 || countTime <= 0)
+            if (_move._transform.position.y <= -3f || _move.healt <= 0 || countTime <= 0)
             {
                 _gameOver_Controller.gameOver.gameObject.SetActive(true);
                 Time.timeScale = 0;
