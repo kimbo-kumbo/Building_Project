@@ -6329,6 +6329,7 @@ GameObject:
   - component: {fileID: 859910300}
   - component: {fileID: 859910301}
   - component: {fileID: 859910302}
+  - component: {fileID: 859910303}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -6363,6 +6364,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf688fe2195e6d3499c65feb31091978, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tutorialManager: {fileID: 859910303}
   _move: {fileID: 144445757}
   textTime: {fileID: 1230644918}
   textHealt: {fileID: 1499553899}
@@ -6401,6 +6403,20 @@ MonoBehaviour:
   gameOver: {fileID: 65955996}
   _restart: {fileID: 451836298}
   _exit: {fileID: 1152403322}
+--- !u!114 &859910303
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 859910297}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f7fb0e668d1a3f4b9f687f408b1b42c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tutorialScripts:
+  - {fileID: 11400000, guid: 7726ba99ab02fe24b9412b064f137a5e, type: 2}
 --- !u!1 &861070460 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2916382174279899644, guid: 698ea743777c202498ec3cef77fb8063, type: 3}

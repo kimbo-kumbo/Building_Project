@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class InterfaceControl : MonoBehaviour
 {
+    [SerializeField] TutorialManager tutorialManager;
     [SerializeField] Move _move;
     [SerializeField] Text textTime; 
     [SerializeField] Text textHealt; 
@@ -19,7 +20,8 @@ public class InterfaceControl : MonoBehaviour
         else Debug.Log("Все ссылки заполненны");
 #endif
         textHealt.text = _move.healt.ToString(); 
-        StartCoroutine(TimeCoroutine());        
+        StartCoroutine(TimeCoroutine());
+        tutorialManager.OnEvent(TutorialEvent.GameStart);
     }
     private void OnEnable()
     {
