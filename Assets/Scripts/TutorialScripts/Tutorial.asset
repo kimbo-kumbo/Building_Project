@@ -1,0 +1,119 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb7f4edb497d7934394a6306cc72fcfe, type: 3}
+  m_Name: Tutorial
+  m_EditorClassIdentifier: 
+  startTriger: 1
+  steps:
+  - startTriger: 1
+    action: 0
+    data: "\u0414\u0430\u0432\u0430\u0439 \u0438\u0437\u0443\u0447\u0438\u043C \u043E\u0441\u043D\u043E\u0432\u044B
+      \u0443\u043F\u0440\u0430\u0432\u043B\u0435\u043D\u0438\u044F !"
+    endStepTutorial: 0
+  - startTriger: 0
+    action: 4
+    data: 4
+    endStepTutorial: 0
+  - startTriger: 0
+    action: 3
+    data: 
+    endStepTutorial: 0
+  - startTriger: 0
+    action: 4
+    data: 2
+    endStepTutorial: 0
+  - startTriger: 0
+    action: 0
+    data: "\u0414\u043B\u044F \u0441\u043C\u0435\u0449\u0435\u043D\u0438\u044F \u043F\u0435\u0440\u0441\u043E\u043D\u0430\u0436\u0430
+      \u0432\u043F\u0440\u0430\u0432\u043E \u043D\u0430\u0436\u043C\u0438 \"D\""
+    endStepTutorial: 0
+  - startTriger: 3
+    action: 4
+    data: 1
+    endStepTutorial: 0
+  - startTriger: 0
+    action: 3
+    data: 
+    endStepTutorial: 1
+  - startTriger: 0
+    action: 4
+    data: 2
+    endStepTutorial: 0
+  - startTriger: 0
+    action: 0
+    data: "\u041C\u043E\u043B\u043E\u0434\u0435\u0446, \u0442\u0430\u043A \u0434\u0435\u0440\u0436\u0430\u0442\u044C!
+      \u0422\u0435\u043F\u0435\u0440\u044C \u0441\u043C\u0435\u0441\u0442\u0438 \u043F\u0435\u0440\u0441\u043E\u043D\u0430\u0436\u0430
+      \u0432\u043B\u0435\u0432\u043E . \u041D\u0430\u0436\u043C\u0438 \"A\""
+    endStepTutorial: 0
+  - startTriger: 2
+    action: 4
+    data: 1
+    endStepTutorial: 0
+  - startTriger: 0
+    action: 3
+    data: 
+    endStepTutorial: 1
+  - startTriger: 0
+    action: 4
+    data: 2
+    endStepTutorial: 0
+  - startTriger: 0
+    action: 0
+    data: "\u0422\u0435\u043F\u0435\u0440\u044C \u0434\u0430\u0432\u0430\u0439 \u043D\u0430\u0443\u0447\u0438\u043C\u0441\u044F
+      \u043F\u0440\u044B\u0433\u0430\u0442\u044C ! \u041D\u0430\u0436\u043C\u0438
+      \"\u041F\u0440\u043E\u0431\u0435\u043B\" \u0434\u043B\u044F \u043F\u0440\u044B\u0436\u043A\u0430"
+    endStepTutorial: 0
+  - startTriger: 4
+    action: 4
+    data: 1
+    endStepTutorial: 0
+  - startTriger: 0
+    action: 3
+    data: 
+    endStepTutorial: 1
+  - startTriger: 0
+    action: 4
+    data: 2
+    endStepTutorial: 0
+  - startTriger: 0
+    action: 0
+    data: "\u041E\u0441\u0442\u0430\u043B\u043E\u0441\u044C \u043D\u0430\u0443\u0447\u0438\u0442\u044C\u0441\u044F
+      \u0441\u043E\u0431\u0438\u0440\u0430\u0442\u044C \u043C\u043E\u043D\u0435\u0442\u043A\u0438
+      . \u0414\u043B\u044F \u043D\u0430\u0447\u0430\u043B\u0430 \u0445\u0432\u0430\u0442\u0438\u0442
+      3 \u0448\u0442\u0443\u043A !"
+    endStepTutorial: 0
+  - startTriger: 0
+    action: 5
+    data: 3
+    endStepTutorial: 0
+  - startTriger: 5
+    action: 3
+    data: 
+    endStepTutorial: 1
+  - startTriger: 0
+    action: 4
+    data: 2
+    endStepTutorial: 0
+  - startTriger: 0
+    action: 0
+    data: "\u041F\u043E\u0437\u0434\u0440\u0430\u0432\u043B\u044F\u0435\u043C . \u0422\u044B
+      \u0443\u0441\u043F\u0435\u0448\u043D\u043E \u043F\u0440\u043E\u0448\u0451\u043B
+      \u043E\u0431\u0443\u0447\u0435\u043D\u0438\u0435!"
+    endStepTutorial: 0
+  - startTriger: 0
+    action: 4
+    data: 4
+    endStepTutorial: 0
+  - startTriger: 0
+    action: 3
+    data: 
+    endStepTutorial: 0

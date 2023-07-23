@@ -14,16 +14,27 @@ public class TutorialStep
     public TutorialEvent startTriger;
     public TutorialAction action;
     public string data;
+    public bool endStepTutorial;
 }
 
 [System.Serializable]
 public enum TutorialEvent    
 {
-    GameStart
+    Update,
+    GameStart,
+    PlayerMoveLeft,
+    PlayerMoveRight,
+    PlayerJamp,
+    ItemsTakeFinish
 }
 
 [System.Serializable]
 public enum TutorialAction
 {
-    ShowText
+    ShowText,
+    HintOnUI,
+    HintOnGameObject,    
+    Clear,
+    Wait,
+    CollectItems
 }

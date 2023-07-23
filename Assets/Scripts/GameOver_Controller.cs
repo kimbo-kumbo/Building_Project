@@ -16,12 +16,12 @@ public class GameOver_Controller : SceneLoad
 
     private void OnEnable()
     {
-        _restart.onClick.AddListener(delegate { LoadScene(SceneExample.NewGame); });
-        _exit.onClick.AddListener(delegate { LoadScene(SceneExample.Exit); });
+        _restart.onClick.AddListener(()=> LoadScene(SceneExample.Restart));
+        _exit.onClick.AddListener(() => LoadScene(SceneExample.Exit));
     }
     private void OnDisable()
     {
-        _restart.onClick.RemoveListener(delegate { LoadScene(SceneExample.NewGame); });
-        _exit.onClick.RemoveListener(delegate { LoadScene(SceneExample.Exit); });
+        _restart.onClick.RemoveListener(() => LoadScene(SceneExample.Restart));
+        _exit.onClick.RemoveListener(() => LoadScene(SceneExample.Exit));
     }
 }

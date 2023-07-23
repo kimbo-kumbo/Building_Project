@@ -21,19 +21,19 @@ public class PauseMenu_Controller : SceneLoad
     }
     private void OnEnable()
     {
-        _resume.onClick.AddListener(delegate { ResumeGame(); });
-        _restart.onClick.AddListener(delegate { LoadScene(SceneExample.NewGame); });
-        _mainMenu.onClick.AddListener(delegate { LoadScene(SceneExample.MainMenu); });
-        _exit.onClick.AddListener(delegate { LoadScene(SceneExample.Exit); });
+        _resume.onClick.AddListener(ResumeGame);
+        _restart.onClick.AddListener(() => LoadScene(SceneExample.Restart));
+        _mainMenu.onClick.AddListener(()=> LoadScene(SceneExample.MainMenu));
+        _exit.onClick.AddListener(() => LoadScene(SceneExample.Exit));
         _newInput.GameControl.Enable();
         _newInput.GameControl.PauseMenu.performed += context => OpenPauseMenu();        
     }
     private void OnDisable()
     {
-        _resume.onClick.RemoveListener(delegate { ResumeGame(); });
-        _restart.onClick.RemoveListener(delegate { LoadScene(SceneExample.NewGame); });
-        _mainMenu.onClick.RemoveListener(delegate { LoadScene(SceneExample.MainMenu); });
-        _exit.onClick.RemoveListener(delegate { LoadScene(SceneExample.Exit); });
+        _resume.onClick.RemoveListener(ResumeGame);
+        _restart.onClick.RemoveListener(()=> LoadScene(SceneExample.Restart));
+        _mainMenu.onClick.RemoveListener(() => LoadScene(SceneExample.MainMenu));
+        _exit.onClick.RemoveListener(() => LoadScene(SceneExample.Exit));
 
         _newInput.Disable();
     }    

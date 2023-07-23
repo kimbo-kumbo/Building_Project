@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class InterfaceControl : MonoBehaviour
@@ -21,7 +22,8 @@ public class InterfaceControl : MonoBehaviour
 #endif
         textHealt.text = _move.healt.ToString(); 
         StartCoroutine(TimeCoroutine());
-        tutorialManager.OnEvent(TutorialEvent.GameStart);
+        if (SceneManager.GetActiveScene().name == "Training")
+            tutorialManager.OnEvent(TutorialEvent.GameStart);
     }
     private void OnEnable()
     {

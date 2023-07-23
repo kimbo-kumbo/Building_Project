@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TrigerLoadLevel : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class TrigerLoadLevel : MonoBehaviour
     }
 
     public void ActivateCoin()
-    {
+    {       
         _coin.gameObject.SetActive(true);
     }
 }

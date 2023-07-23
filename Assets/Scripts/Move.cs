@@ -1,10 +1,11 @@
 using System;
 using System.Collections;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 
 public class Move : MonoBehaviour
 {
+    [SerializeField] TutorialManager _tutorialManager;
     [SerializeField] Animator animator;
     [SerializeField] float forceJamp = 7f;
     [SerializeField] float speedmove = 8f;
@@ -20,7 +21,6 @@ public class Move : MonoBehaviour
 
     public static Action CoinsEvent;
     public static Action HealtEvent;
-
 
     ////////////////////////
 
@@ -67,8 +67,13 @@ public class Move : MonoBehaviour
 
         if (other.gameObject.tag == "Money")
         {
+            //_tutorialManager.OnEvent(TutorialEvent.CointTake);
             other.gameObject.SetActive(false);
             CoinsEvent?.Invoke();
+            if (SceneManager.GetActiveScene().name == "Training"  && _tutorialManager.IsEnoughCoins)
+            {
+                _tutorialManager.OnEvent(TutorialEvent.ItemsTakeFinish);
+            }
         }
     }
 
@@ -111,6 +116,8 @@ public class Move : MonoBehaviour
     {
         if (onGround)
         {
+            if (SceneManager.GetActiveScene().name == "Training")
+                _tutorialManager.OnEvent(TutorialEvent.PlayerJamp);
             animator.SetTrigger("Jamp");
             rb?.AddForce(Vector3.up * forceJamp, ForceMode.VelocityChange);
             animator.SetTrigger("Run");
@@ -123,15 +130,30 @@ public class Move : MonoBehaviour
 
 #if UNITY_STANDALONE
 
-        var direction = _newInput.Move.SlideMove.ReadValue<Vector2>(); 
+        var direction = _newInput.Move.SlideMove.ReadValue<Vector2>();
         transform.Translate(move * direction);
+        if (SceneManager.GetActiveScene().name == "Training")
+        {
+            if (direction.x < 0) _tutorialManager.OnEvent(TutorialEvent.PlayerMoveLeft);
+            if (direction.x > 0) _tutorialManager.OnEvent(TutorialEvent.PlayerMoveRight);
+        }       
 
 #endif
 
 #if UNITY_EDITOR
 
-        if (Input.GetKey(KeyCode.RightArrow)) transform.Translate(move);
-        if (Input.GetKey(KeyCode.LeftArrow)) transform.Translate(-move);
+        if (Input.GetKey(KeyCode.RightArrow))
+        {
+            if (SceneManager.GetActiveScene().name == "Training")
+                _tutorialManager.OnEvent(TutorialEvent.PlayerMoveRight);
+            transform.Translate(move);
+        }
+        if (Input.GetKey(KeyCode.LeftArrow))
+        {
+            if (SceneManager.GetActiveScene().name == "Training")
+                _tutorialManager.OnEvent(TutorialEvent.PlayerMoveLeft);
+            transform.Translate(-move);
+        } 
 #endif
 
     }
